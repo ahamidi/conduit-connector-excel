@@ -54,7 +54,6 @@ func (s *Source) Configure(ctx context.Context, cfg map[string]string) error {
 
 // Open prepare the plugin to start sending records from the given position
 func (s *Source) Open(ctx context.Context, rp sdk.Position) error {
-	sdk.Logger(ctx).Debug().Msg("open")
 	f, err := excelize.OpenFile(s.config.Filepath)
 	if err != nil {
 		log.Println("open error")
@@ -84,7 +83,6 @@ func (s *Source) Open(ctx context.Context, rp sdk.Position) error {
 
 // Read gets the next row from the Excel file
 func (s *Source) Read(ctx context.Context) (sdk.Record, error) {
-	sdk.Logger(ctx).Debug().Msg("read")
 	if !s.iterator.Next() {
 		return sdk.Record{}, sdk.ErrBackoffRetry
 	}
@@ -128,6 +126,5 @@ func (s *Source) Teardown(ctx context.Context) error {
 }
 
 func (s *Source) Ack(ctx context.Context, position sdk.Position) error {
-	sdk.Logger(ctx).Debug().Str("position", string(position)).Msg("got ack")
 	return nil // no ack needed
 }
